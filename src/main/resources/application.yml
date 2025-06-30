@@ -1,5 +1,20 @@
 spring:
     application:
         name: cicddoodle
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        password: pkIfTsuUvnFyXzwShFHoeONkHPVjDMkA
+        url: jdbc:postgresql://shuttle.proxy.rlwy.net:33180/railway
+        username: postgres
+        jpa:
+            hibernate:
+                ddl-auto: update
+            properties:
+                hibernate:
+                    dialect: org.hibernate.dialect.PostgreSQLDialect
+            show-sql: true
 server:
     port: 8081
+
+
+
