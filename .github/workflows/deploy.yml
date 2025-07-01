@@ -8,40 +8,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    container: ghcr.io/railwayapp/cli:latest
+    env:
+      SVC_ID: a3955f8b-83fd-49cc-84af-c0261dcf6e66
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'  # or 21 if you use Java 21
-
-#      - name: Give execute permission to gradlew
-#        run: chmod +x ./gradlew
-#
-#      - name: Build the project
-#        run: ./gradlew clean build -x test
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Confirm Railway version
-        run: railway --version
-
-      - name: Init Railway in CI
-        run: |
-            echo "${{ secrets.RAILWAY_TOKEN }}" | railway login
-            railway init --yes
-
-      - name: Check Railway Status
-        run: railway status
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
-      - name: Deploy to Railway
-        run: railway up
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - uses: actions/checkout@v3
+      - run: railway up --service=${{ env.SVC_ID }}
