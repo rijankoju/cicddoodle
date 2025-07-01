@@ -19,15 +19,27 @@ jobs:
           distribution: 'temurin'
           java-version: '17'  # or 21 if you use Java 21
 
-      - name: Give execute permission to gradlew
-        run: chmod +x ./gradlew
+#      - name: Give execute permission to gradlew
+#        run: chmod +x ./gradlew
+#
+#      - name: Build the project
+#        run: ./gradlew clean build -x test
 
-      - name: Build the project
-        run: ./gradlew clean build -x test
-
-
-      - name: Install Railway CLI (new package name)
+      - name: Install Railway CLI
         run: npm install -g @railway/cli
+
+      - name: Confirm Railway version
+        run: railway --version
+
+      - name: Init Railway in CI
+        run: |
+            echo "${{ secrets.RAILWAY_TOKEN }}" | railway login
+            railway init --yes
+
+      - name: Check Railway Status
+        run: railway status
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
       - name: Deploy to Railway
         run: railway up
